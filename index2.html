@@ -11,9 +11,10 @@
     <body>
         <script>
             console.log(window.navigator);
-            
+            var blob = new Blob(["I scream. You scream. We all scream for ice cream."])
             if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-                window.navigator.msSaveOrOpenBlob(blob, fileName);
+                window.navigator.msSaveOrOpenBlob(blob, fileName); //ie10 提供保存和打开按钮
+                console.log(window.navigator.msSaveOrOpenBlob(blob, fileName));
             }
 
         </script>

@@ -15,7 +15,7 @@
              * params:数组对象的属性key
              * 在vue中this.arr为设置好的数组,在源生JS中可以传入一个数组参数
              */
-            /* function handleSort(params) {
+            function handleSort(params) {
                 let arr = this.arr
                 // 需要排序的数组
                 let fillNameArr = []
@@ -36,9 +36,10 @@
                 console.log(fullNameArr)
                 // 数组合并
                 this.arr = [...fillNameArr, ...fullNameArr]
-            } */
+            }
+            // 正则
            let reg = /^[\u4e00-\u9fa5]*$/
-           console.log(reg.test('是是是a'));
+           console.log(reg.test('是是是a')); // false
            
         </script>
     </body>
