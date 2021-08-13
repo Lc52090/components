@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+  </head>
+
+  <body>
+    <script>
+      // pending fulfilled rejected 
+      class myPromise {
+        constructor(exac) {
+          this.state = 'pending'
+          this.value = undefined //reject返回的value值
+          this.reason = undefined // resolve返回的value值
+          this.rejectList = []
+          this.resloveList = []
+          let reject = (val) => {
+            if (this.state === 'pending') {
+              this.state = 'rejected'
+              this.value = val
+              this.rejectList.forEach(item => item())
+            }
+          }
+          let reslove = (val) => {
+            if (this.state === 'pending') {
+              this.state = 'fulfilled'
+              this.reason = val
+              this.resloveList.forEach(item => item())
+            }
+          }
+          try {
+            exac(reject, reslove)
+          } catch (error) {
+            reject(error)
+          }
+        }
+        then(onRejected, onResolved) {
+          if (this.state === 'rejected') {
+            onRejected(this.value)
+          } else if (this.state === 'fulfilled') {
+            onResolved(this.reason)
+          } else if (this.state === 'pending') {
+            this.rejectList.push(onRejected(this.value))
+            this.resloveList.push(onResolved(this.reason))
+          }
+        }
+
+      }
+     
+      new myPromise((reject, reslove) => {
+        setTimeout(() => {
+          console.log(1)
+        });
+        reject(10)
+      }).then((val) => {
+        console.log(val);
+      })
+
+    </script>
+  </body>
+
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>js导出xls表格</title>
+        <style>
+            html,
+            body {
+                width: 100%;
+                height: 100%;
+            }
+
+            body {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            table {
+                margin: 10px 0;
+            }
+
+            th {
+                text-align: center;
+            }
+
+        </style>
+    </head>
+
+    <body>
+        <div class="main">
+            <input type="button" value="导出" class="Button" onclick="Export();" />
+            　　<table id='exceltable'>
+                <tr>
+                    <td>列标题</td>
+                    <td>列标题</td>
+                    <td>列标题</td>
+                    <td>列标题</td>
+                    <td>列标题</td>
+                </tr>
+                <tr>
+                    <td>aaa</td>
+                    <td>bbb</td>
+                    <td>ccc</td>
+                    <td>ddd</td>
+                    <td>eee</td>
+                </tr>
+                <tr>
+                    <td>AAA</td>
+                    <td>BBB</td>
+                    <td>CCC</td>
+                    <td>DDD</td>
+                    <td>EEE</td>
+                </tr>
+                <tr>
+                    <td>FFF</td>
+                    <td>GGG</td>
+                    <td>HHH</td>
+                    <td>III</td>
+                    <td>JJJ</td>
+                </tr>
+            </table>
+        </div>
+    </body>
+    <script src="http://lib.sinaapp.com/js/jquery/1.7.2/jquery.min.js"></script>
+    <script src="jquery.table2excel.js"></script>
+    <script>
+        //table2excel插件的可用配置参数有：
+        //exclude：不被导出的表格行的CSS class类。
+        //name：导出的Excel文档的名称。
+        //filename：Excel文件的名称。
+        //exclude_img：是否导出图片。
+        //exclude_links：是否导出超链接
+        //exclude_inputs：是否导出输入框中的内容。
+        function Export() {
+            console.log($("#exceltable"));
+
+            $("#exceltable").table2excel({ //exceltable为存放数据的table
+                // 不被导出的表格行的CSS class类
+                exclude: ".noExl",
+                // 导出的Excel文档的名称
+                name: "表格-姓名表" + new Date().getTime(),
+                // Excel文件的名称
+                filename: "表格-姓名表",
+                bootstrap: false
+            })
+        }
+
+    </script>
+
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Document</title>
+    </head>
+
+    <body>
+        <script>
+            // 数组对象汉字拼音排序
+            /**
+             * params:数组对象的属性key
+             * 在vue中this.arr为设置好的数组,在源生JS中可以传入一个数组参数
+             */
+            /* function handleSort(params) {
+                let arr = this.arr
+                // 需要排序的数组
+                let fillNameArr = []
+                // 若属性key为undefied的数组
+                let fullNameArr = []
+                // let fillNameArr = arr.filter(item => item[params])
+                // let fullNameArr = arr.filter(item => !item[params])
+                arr.forEach(item => {
+                    if (item[params]) {
+                        fillNameArr.push(item)
+                    } else {
+                        fullNameArr.push(item)
+                    }
+                })
+                fillNameArr.sort((a, b) => {
+                    return a[params].localeCompare(b[params], 'zh')
+                })
+                console.log(fullNameArr)
+                // 数组合并
+                this.arr = [...fillNameArr, ...fullNameArr]
+            } */
+           let reg = /^[\u4e00-\u9fa5]*$/
+           console.log(reg.test('是是是a'));
+           
+        </script>
+    </body>
+
+</html>

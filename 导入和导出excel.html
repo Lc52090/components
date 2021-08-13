@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Document</title>
+        <style>
+            table,
+            table tr th,
+            table tr td {
+                border: 1px solid #0094ff;
+            }
+
+            table {
+                cursor: pointer;
+                margin: 10px 0;
+                border-collapse: collapse;
+                padding: 2px;
+                text-align: center;
+            }
+
+            table th,
+            table td {
+                text-align: center;
+            }
+
+        </style>
+        <script src="http://lib.sinaapp.com/js/jquery/1.7.2/jquery.min.js"></script>
+        <script src="jquery.table2excel.js"></script>
+    </head>
+
+    <body>
+        <input type="file" id="file" style="display:none">
+        <button id="buttonClick">上传</button>
+        <button id="downloadExcel">下载</button>
+        <a target="_blank">下载</a>
+        <div class="tableContainer"></div>
+        <script>
+            let newData = null
+            let nameArr = []
+            $("#buttonClick").click(selectedExcel)
+            $("#downloadExcel").click(Export)
+            // 监听上传的点击事件
+            let selectedFile, url,name
+
+            function selectedExcel() {
+                $("#file").click()
+                $("#file").off("change").on("change", function () {
+                    //获取读取我文件的File对象
+                    selectedFile = document.getElementById('file').files[0];
+                    name = selectedFile.name; //读取选中文件的文件名
+                    /* let size = selectedFile.size;//读取选中文件的大小 */
+                    // 判断文件后缀名是否为xls格式
+                    let reg = /(\.xls)$/
+                    if (!selectedFile || !reg.test(name)) {
+                        $.myToast('请选择正确的文件')
+                        return
+                    }
+                    // 判断nameArr是否有值，如果有判断是否上传的是相同的文件名
+                    if (!nameArr) {
+                        if (nameArr && nameArr.some(item => item.name === name)) {
+                            $.myToast('已经有相同的文件')
+                            return
+                        }
+                    }
+                    let reader = new FileReader(); //这是核心,读取操作就是由它完成.
+                    reader.readAsText(selectedFile); //读取文件的内容,也可以读取文件的URL
+                    // reader.readAsDataURL(selectedFile)
+                    reader.onload = function () {
+                        //当读取完成后回调这个函数,然后此时文件的内容存储到了result中,直接操作即可
+                        let data = this.result
+                        // 找到匹配的字符串起始位置和最后位置
+                        let search = '<table'
+                        let endSearch = "</table>"
+                        let start = data.indexOf(search)
+                        let end = data.indexOf(endSearch)
+                        // newData为返回的table模板字符串 "<table></table>"
+                        newData = data.slice(start, end) + "</table>"
+                        newData = newData.replace(/<td\/>/g, '<td>')
+                        nameArr.push({
+                            name: name,
+                            newData: newData
+                        })
+                        // 渲染excel文件的数据到table上
+                        for (let i = 0; i < nameArr.length; i++) {
+                            $('.tableContainer').html(nameArr[i].newData)
+                        }
+                        // $scope.$apply()   //Augular的 ng-repeat渲染
+                    }
+                })
+            }
+
+            // 超链接下载
+            $('a').click(function () {
+                $('a').attr('href', window.URL.createObjectURL(selectedFile))
+                $('a').attr('download', name.replace('.xls', ''))
+            })
+            // 通过table下载
+            function Export() {
+                $(".tableContainer").attr('id', 'exceltable')
+                $("#exceltable").table2excel({ //exceltable为存放数据的table
+                    // 不被导出的表格行的CSS class类
+                    exclude: ".noExl",
+                    // 导出的Excel文档的名称
+                    name: "表格-姓名表" + new Date().getTime(),
+                    // Excel文件的名称
+                    filename: name.replace('.xls', ''),
+                    bootstrap: false
+                })
+            }
+
+        </script>
+    </body>
+
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>手写readonly函数</title>
+    </head>
+
+    <body>
+        <script>
+            const readonlyHandler = {
+                get(target, prop) {
+                    const result = Reflect.get(target, prop)
+                    console.log('拦截到了读取数据', prop, result)
+                    return result
+                },
+                set(target, prop, val) {
+                    console.log('只能读取数据，不能修改或者添加数据')
+                    return true
+                },
+                deleteProperty(target, prop) {
+                    console.log('只能读取数据，不能删除数据')
+                    return true
+                }
+            }
+            // 定义一个shallowReadonly函数
+            function shallowReadonly(target) {
+                //判断当前数据是否是对象
+                if (target && typeof target === 'object') {
+                    return new Proxy(target, readonlyHandler)
+                }
+                return target
+            }
+            // 定义一个readonly函数 深度只读
+            function readOnly(target) {
+                if (target && typeof target === 'object') {
+                    if (Array.isArray(target)) {// 判断是不是数组
+                        // 遍历数组
+                        target.forEach((item, index) => {
+                            target[index] = readOnly(item)
+                        })
+                    } else { // 判断target是不是对象
+                        // 遍历对象
+                        Object.keys(target).forEach(key => {
+                            target[key] = readOnly(target[key])
+                        })
+
+                    }
+                    return new Proxy(target, readonlyHandler)
+                }
+                return target
+            }
+            //测试shallowReadonly和readonly
+            /* const porxyUser = shallowReadonly({
+                name: '小名',
+                cars: ['宝马', '奔驰']
+            }) */
+            // 可以读取，不能修改,不能删除
+            // porxyUser.name
+            // porxyUser.cars = '起亚'
+            // delete porxyUser.name
+            // 拦截到了读取，拦截不到深度修改
+            // porxyUser.cars[0] = '起亚'
+            // 拦截到了读取，可以删除
+            // delete porxyUser.cars[0]
+
+            const porxyUser = readOnly({
+                name: '小名',
+                cars: ['宝马', '奔驰']
+            })
+            // porxyUser.name
+            // porxyUser.cars[0] = '起亚'
+            // delete porxyUser.cars[0]
+        </script>
+    </body>
+
+</html>

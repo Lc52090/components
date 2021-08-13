@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="http://lib.sinaapp.com/js/jquery/1.7.2/jquery.min.js"></script>
+    <script src="jquery.table2excel.js"></script>
+  </head>
+
+  <body>
+    <script>
+      var blob = new Blob([data.data], {
+        type: "application/vnd.ms-excel"
+      });
+      // 判断IE
+      if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+        window.navigator.msSaveOrOpenBlob(blob, fileName);
+      } else {
+        // 创建blob对象herf
+        var objectUrl = URL.createObjectURL(blob);
+        var aForExcel = $("<a style='display:none' download='" +
+          fileName +
+          "'><span class='forExcel'>下载excel</span></a>").attr("href", objectUrl);
+        $("body").append(aForExcel);
+        $(".forExcel").click();
+        $(".forExcel").remove();
+        aForExcel.remove();
+        option.message = "下载完成！";
+        $.myAlert(option);
+      }
+
+    </script>
+  </body>
+
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Document</title>
+    </head>
+
+    <body>
+
+    </body>
+    <script>
+        /* console.log('主线程宏任务');
+        setTimeout(() => {
+            console.log('异步1任务time1');
+            new Promise(function (resolve, reject) {
+                console.log('异步1宏任务promise');
+                setTimeout(() => {
+                    console.log('异步1任务time2');
+
+                }, 0);
+                resolve();
+
+            }).then(function () {
+                console.log('异步1微任务then')
+
+            })
+
+        }, 0);
+
+
+
+        setTimeout(() => {
+            console.log('异步2任务time2');
+        }, 0);
+        new Promise(function (resolve, reject) {
+            console.log('宏任务promise');
+            // reject();
+            resolve();
+
+        }).then(function () {
+            console.log('微任务then')
+
+        }).catch(function () {
+            console.log('微任务catch')
+
+        })
+        console.log('主线程宏任务2'); */
+
+        /* console.log('script start');
+
+        setTimeout(function () {
+            console.log('setTimeout');
+        }, 0);
+
+        Promise.resolve().then(function () {
+            console.log('promise1');
+        }).then(function () {
+            console.log('promise2');
+        });
+
+        console.log('script end'); */
+
+
+
+        console.log("Hi!");
+
+        setTimeout(function timeout() {
+            console.log("Click the button!");
+        }, 5000);
+
+        console.log("Welcome to loupe.");
+
+    </script>
+
+</html>
